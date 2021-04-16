@@ -1,0 +1,55 @@
+//// -- LEVEL 1
+//// -- Tables and References
+
+// Creating tables
+Table user as U {
+  id uuid [pk]
+  user_name varchar
+  password varchar
+  created datetime
+  email varchar
+  about varchar
+}
+
+Table role as R {
+  id int [pk, increment]
+  role varchar
+}
+
+Table user_role as UR {
+  role_id int
+  user_id uuid
+}
+
+Table post as P {
+  id uuid [pk]
+  title varchar
+  body mediumtext
+  created datetime
+  user_id uuid
+}
+
+Table like as L {
+  user_id uuid
+  post_id uuid
+}
+
+Table comment as C {
+  id int [pk, increment]
+  user_id uuid
+  post_id uuid
+  body varchar
+}
+
+
+Ref: P.user_id > U.id
+Ref: L.post_id > P.id
+Ref: L.user_id > U.id
+Ref: C.post_id > P.id
+Ref: C.user_id > U.id
+Ref: UR.role_id > R.id
+Ref: UR.user_id - U.id 
+
+// Creating references
+// You can also define relaionship separately
+// > many-to-one; < one-to-many; - one-to-one
