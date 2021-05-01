@@ -1,15 +1,15 @@
 from django.contrib import admin
 
-from .models import Article, Comment 
+from .models import Post, Comment 
 
 class CommentInline(admin.TabularInline):
 	model = Comment
 	extra = 1
 
-class ArticleAdmin(admin.ModelAdmin):
+class PostAdmin(admin.ModelAdmin):
 	inlines = [
 		CommentInline,
 	]
 
-admin.site.register(Article, ArticleAdmin)
+admin.site.register(Post, PostAdmin)
 admin.site.register(Comment)

@@ -48,7 +48,7 @@ THIRD_APPS = [
 LOCAL_APPS = [
     'users.apps.UsersConfig',
     'pages.apps.PagesConfig',
-    'articles.apps.ArticlesConfig',
+    'posts.apps.PostsConfig',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_APPS + LOCAL_APPS
