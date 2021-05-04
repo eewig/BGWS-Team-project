@@ -6,7 +6,9 @@
 	<p>by {{ object.author }} | {{ object.date }} </p>
 	<p>{{ object.body }}</p>
 </div>
-<p><a href="{% url 'post_edit' post.id %}">Edit</a> | 
-	<a href="{% url 'post_delete' post.id %}">Delete</a></p>
+	{% if post.author == user %}
+	<a href="{% url 'post_edit' post.id %}">Edit</a>
+	<a href="{% url 'post_delete' post.id %}">Delete</a>
+	{% endif %}
 	<p>Back to <a href="{% url 'post_list' %}">All Articles</a>.</p>
 {% endblock content %}
