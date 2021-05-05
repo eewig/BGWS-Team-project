@@ -6,21 +6,15 @@
 	{% for post in object_list %}
 		<div class="card">
 			<div class="card-header">
-				<span class="font-weight-bold">{{ post.title }}</span> &middot;
+			<span class="text-muted"><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></span> &middot;
 				<span class="text-muted">by {{ post.author }} | {{post.date}}</span>
 			</div>
 			<div class="card-body">
 				<p>{{ post.body }}</p>
-				<a href="{% url 'post_edit' post.id %}">Edit</a>
-				<a href="{% url 'post_delete' post.id %}">Delete</a>
-			</div>
-			<div class="card-footer">
-				{% for comment in post.comments.all %}
-					<p>
-						<span class="font-weight-bold">{{ comment.author }} &middot;</span>
-						{{ comment }}
-					</p>
-				{% endfor %}
+				{% if post.author == user %}
+					<a href="{% url 'post_edit' post.id %}">Edit</a>
+					<a href="{% url 'post_delete' post.id %}">Delete</a>
+	    	{% endif %}
 			</div>
 		</div>
 		<br>
