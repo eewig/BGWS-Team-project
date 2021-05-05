@@ -9,10 +9,11 @@ from django.urls import reverse_lazy
 from .models import Post
 
 # class PostListView(LoginRequiredMixin, ListView):
-class PostListView(ListView):
+class PostHomeListView(ListView):
 	model = Post
-	template_name = 'post_list.html'
+	template_name = 'home.html'
 	login_url = 'login'
+
 
 # class PostDetailView(LoginRequiredMixin, DetailView):
 class PostDetailView(DetailView):
@@ -33,7 +34,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 	model = Post
 	template_name = 'post_delete.html'
-	success_url = reverse_lazy('post_list')
+	success_url = reverse_lazy('home')
 	login_url = 'login'
 
 	def test_func(self):
