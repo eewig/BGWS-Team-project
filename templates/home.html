@@ -1,29 +1,35 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %} Home {% endblock title %}
 
 {% block content %}
 <div class="jumbotron">
-	<h1 class="display-4">BGWS</h1>
-	<p class="lead">Hello, this is BGWS built with Django.</p>
+    <h1 class="display-4">BGWS</h1>
+    <p class="lead">Hello, this is BGWS built with Django.</p>
 </div>
 <div style="margin-top: 4vh;">
-	{% for post in object_list %}
-		<div class="card">
-			<div class="card-header">
-			<span class="text-muted"><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></span> &middot;
-				<span class="text-muted">by {{ post.author }} | {{post.date}}</span>
-			</div>
-			<div class="card-body">
-				<p>{{ post.body }}</p>
-				{% if post.author == user %}
-					<a href="{% url 'post_edit' post.id %}">Edit</a>
-					<a href="{% url 'post_delete' post.id %}">Delete</a>
-	    	{% endif %}
-  	    <p class="card-text"><small class="text-muted">Likes: {{ post.likes.count }}</small></p>
-			</div>
-		</div>
-		<br>
-	{% endfor %}
+    {% for post in object_list %}
+        <div class="card">
+            <div class="card-header">
+            <span class="text-muted"><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></span> &middot;
+                <span class="text-muted">by {{ post.author }} | {{post.date}}</span>
+            </div>
+            <div class="card-body" >
+                <p>{{ post.body }}</p>
+                {% if post.author == user %}
+                    <a href="{% url 'post_edit' post.id %}">Edit</a>
+                    <a href="{% url 'post_delete' post.id %}">Delete</a>
+            {% endif %}
+         	<div id="likes-{{ post.id }}">
+       		<img src="{% static 'posts/like.png' %}" onClick="likePost('likes-{{ post.id }}')" width="25" height="25">
+          <p class="card-text"><small class="text-muted likes-number">{{ post.likes.count }}</small></p>
+         	</div>
+
+            </div>
+        </div>
+        <br>
+    {% endfor %}
 </div>
+
+<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
 {% endblock content %}
