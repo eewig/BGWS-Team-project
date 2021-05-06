@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 <div class="article-entry">
 	<h2>{{ object.title }}</h2>
@@ -10,5 +10,10 @@
 	<a href="{% url 'post_edit' post.id %}">Edit</a>
 	<a href="{% url 'post_delete' post.id %}">Delete</a>
 	{% endif %}
+	<div id="likes-{{ post.id }}">
+ <img src="{% static 'posts/like.png' %}" onClick="likePost('likes-{{ post.id }}')" width="25" height="25">
+ <p class="card-text"><small class="text-muted likes-number">{{ post.likes.count }}</small></p>
+ </div>
 	<p>Back to <a href="{% url 'home' %}">All Articles</a>.</p>
+	<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
 {% endblock content %}
