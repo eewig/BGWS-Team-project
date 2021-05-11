@@ -23,7 +23,7 @@ class PostDetailView(DetailView):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 	model = Post
-	fields = ('title', 'body',)
+	fields = ('title', 'body')
 	template_name = 'post_edit.html'
 	login_url = 'login'
 
@@ -44,7 +44,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 class PostCreateView(LoginRequiredMixin, CreateView):
 	model = Post
 	template_name = 'post_new.html'
-	fields = ('title', 'body',)
+	fields = ('title', 'body')
 	login_url = 'login'
 
 	def form_valid(self, form):

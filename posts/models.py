@@ -3,7 +3,6 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
-
 class Post(models.Model):
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 	title = models.CharField(max_length=255)
