@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load posts_extras %}
 {% block title %} Home {% endblock title %}
 
 {% block content %}
@@ -20,11 +21,14 @@
                     <a href="{% url 'post_edit' post.id %}">Edit</a>
                     <a href="{% url 'post_delete' post.id %}">Delete</a>
             {% endif %}
-         	<div id="likes-{{ post.id }}">
-       		<img src="{% static 'posts/like.png' %}" onClick="likePost('likes-{{ post.id }}')" width="25" height="25">
-          <p class="card-text"><small class="text-muted likes-number">{{ post.likes.count }}</small></p>
-         	</div>
-
+         	  <div id="likes-{{ post.id }}">
+                {% if post|isliked:user %}
+                    <img src="{% static 'posts/like_active.png' %}" onClick="likePost('{{ post.id }}')" width="25" height="25">
+                {% else %}
+                    <img src="{% static 'posts/like.png' %}" onClick="likePost('{{ post.id }}')" width="25" height="25">
+                {% endif %}
+             <p class="card-text"><small class="text-muted likes-number">{{ post|countlikes }}</small></p>
+             </div>
             </div>
         </div>
         <br>
@@ -32,4 +36,31 @@
 </div>
 
 <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+<script type="text/javascript">
+function getPostLikes(post_id){
+    var xmlhttp = new XMLHttpRequest();
+    var url = "localhost:8000/like/" + post_id + "/";
+
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var myArr = JSON.parse(this.responseText);
+            myFunction(myArr);
+        }
+    };
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+
+    function myFunction(arr) {
+        var out = "";
+        var i;
+        for(i = 0; i < arr.length; i++) {
+            out += '<a href="' + arr[i].url + '">' +
+            arr[i].display + '</a><br>';
+        }
+        var likes = 0;
+        document.getElementsByClassName('likes-number')[0].textContent = likes;
+    } 
+}
+
+</script>
 {% endblock content %}

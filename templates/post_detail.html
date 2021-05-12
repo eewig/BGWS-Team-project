@@ -1,18 +1,23 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load posts_extras %}
 {% block content %}
 <div class="article-entry">
-	<h2>{{ object.title }}</h2>
-	<p>by {{ object.author }} | {{ object.date }} </p>
-	<p>{{ object.body }}</p>
+	<h2>{{ post.title }}</h2>
+	<p>by {{ post.author }} | {{ post.date }} </p>
+	<p>{{ post.body }}</p>
 </div>
 	{% if post.author == user %}
 	<a href="{% url 'post_edit' post.id %}">Edit</a>
 	<a href="{% url 'post_delete' post.id %}">Delete</a>
 	{% endif %}
 	<div id="likes-{{ post.id }}">
- <img src="{% static 'posts/like.png' %}" onClick="likePost('likes-{{ post.id }}')" width="25" height="25">
- <p class="card-text"><small class="text-muted likes-number">{{ post.likes.count }}</small></p>
+	{% if post|isliked:user %}
+		<img src="{% static 'posts/like_active.png' %}" onClick="likePost('{{ post.id }}')" width="25" height="25">
+	{% else %}
+ 		<img src="{% static 'posts/like.png' %}" onClick="likePost('{{ post.id }}')" width="25" height="25">
+ 	{% endif %}
+ <p class="card-text"><small class="text-muted likes-number">{{ post|countlikes }}</small></p>
  </div>
 	<p>Back to <a href="{% url 'home' %}">All Articles</a>.</p>
 	<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
