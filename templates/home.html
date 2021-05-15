@@ -13,7 +13,11 @@
         <div class="card">
             <div class="card-header">
             <span class="text-muted"><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></span> &middot;
-                <span class="text-muted">by {{ post.author }} | {{post.date}}</span>
+                <span class="text-muted">
+                  by <a href="{% url 'user_profile' post.author.id %}">
+                  {{ post.author }}
+                  </a> | {{post.date}}
+                </span>
             </div>
             <div class="card-body" >
                 <p>{{ post.body }}</p>
@@ -35,32 +39,34 @@
     {% endfor %}
 </div>
 
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    {% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+      </li>
+    {% endif %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a>
+    </li>
+    {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    {% endif %}
+  </ul>
+</nav>
+
 <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
-<script type="text/javascript">
-function getPostLikes(post_id){
-    var xmlhttp = new XMLHttpRequest();
-    var url = "localhost:8000/like/" + post_id + "/";
-
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var myArr = JSON.parse(this.responseText);
-            myFunction(myArr);
-        }
-    };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-
-    function myFunction(arr) {
-        var out = "";
-        var i;
-        for(i = 0; i < arr.length; i++) {
-            out += '<a href="' + arr[i].url + '">' +
-            arr[i].display + '</a><br>';
-        }
-        var likes = 0;
-        document.getElementsByClassName('likes-number')[0].textContent = likes;
-    } 
-}
-
-</script>
 {% endblock content %}

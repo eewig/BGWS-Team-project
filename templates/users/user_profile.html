@@ -3,11 +3,11 @@
 {% block title %}Profile{% endblock %}
 
 {% block content %}
-<h2>Hello</h2>
- <img src="{{ user.pic.url }}" alt="Profile picture" width="300" height="300"> 
-<ol>
-	<li>{{ user.username }}</li>
-	<li>{{ user.email }}</li>
-	<li>{{ user.about }}</li>
-</ol>
+<h2>Hello, {{ user.username }}</h2>
+<img src="{{ user.pic.url }}" alt="Profile picture" width="300" height="300"> 
+<ul style="list-style-type: none; padding: 0; margin-top: 2vh;">
+	<li>Username: {{ user.username }}</li>
+	<li>Email: {{ user.email }}</li>
+	<li>About: {{ user.about }}</li>
+</ul>
 {% endblock %}

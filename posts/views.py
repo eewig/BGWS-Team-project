@@ -17,6 +17,7 @@ class PostHomeListView(ListView):
 	model = Post
 	template_name = 'home.html'
 	login_url = 'login'
+	paginate_by = 5
 
 
 # class PostDetailView(LoginRequiredMixin, DetailView):
@@ -60,6 +61,8 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 
 class PostLikeView(LoginRequiredMixin, View):
+	login_url = 'login'
+
 	def get(self, request, pk):
 		try:
 			p = Post.objects.get(id=pk)

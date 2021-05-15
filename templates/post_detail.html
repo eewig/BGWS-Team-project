@@ -4,7 +4,9 @@
 {% block content %}
 <div class="article-entry">
 	<h2>{{ post.title }}</h2>
-	<p>by {{ post.author }} | {{ post.date }} </p>
+	<p>by <a href="{% url 'user_profile' post.author.id %}">
+        {{ post.author }}
+        </a> | {{ post.date }} </p>
 	<p>{{ post.body }}</p>
 </div>
 	{% if post.author == user %}
