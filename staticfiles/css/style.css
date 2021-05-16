@@ -1,0 +1,33 @@
+.card-box {
+    padding: 20px;
+    border-radius: 3px;
+    margin-bottom: 30px;
+    background-color: #fff;
+}
+.thumb-lg {
+    height: 88px;
+    width: 88px;
+}
+h4 {
+    line-height: 22px;
+    font-size: 18px;
+}
+.img-thumbnail {
+    padding: .25rem;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: .25rem;
+    max-width: 100%;
+    height: auto;
+}
+.center-profile-block {
+  display: block;
+  margin-left: 25%;
+  margin-right: 25%;
+}
+.about {
+    font-style: bold;
+}
+.about-content {
+    text-align: justify;
+}
