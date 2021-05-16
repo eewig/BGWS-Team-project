@@ -1,0 +1,1 @@
+web: gunicorn bgws_project.wsgi
