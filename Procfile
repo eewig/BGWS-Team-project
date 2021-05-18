@@ -1,1 +1,1 @@
-web: gunicorn bgws_project.wsgi
+web: gunicorn -w 2 -b 0.0.0.0:$PORT bgws_project.wsgi --log-file -
