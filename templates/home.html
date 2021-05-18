@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load posts_extras %}
+{% block title %} Home {% endblock title %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">BGWS</h1>
+    <p class="lead">Hello, this is BGWS built with Django.</p>
+</div>
+<div style="margin-top: 4vh;">
+    {% for post in object_list %}
+        <div class="card">
+            <div class="card-header">
+            <span class="text-muted"><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></span> &middot;
+                <span class="text-muted">
+                  by <a href="{% url 'user_profile' post.author.id %}">
+                  {{ post.author }}
+                  </a> | {{post.date}}
+                </span>
+            </div>
+            <div class="card-body" >
+                <p>{{ post.body }}</p>
+                {% if post.author == user %}
+                    <a href="{% url 'post_edit' post.id %}">Edit</a>
+                    <a href="{% url 'post_delete' post.id %}">Delete</a>
+            {% endif %}
+         	  <div id="likes-{{ post.id }}">
+                {% if post|isliked:user %}
+                    <img src="{% static 'posts/like_active.png' %}" onClick="likePost('{{ post.id }}')" width="25" height="25">
+                {% else %}
+                    <img src="{% static 'posts/like.png' %}" onClick="likePost('{{ post.id }}')" width="25" height="25">
+                {% endif %}
+             <p class="card-text"><small class="text-muted likes-number">{{ post|countlikes }}</small></p>
+             </div>
+            </div>
+        </div>
+        <br>
+    {% endfor %}
+</div>
+
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    {% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+      </li>
+    {% endif %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a>
+    </li>
+    {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    {% endif %}
+  </ul>
+</nav>
+
+<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+{% endblock content %}
