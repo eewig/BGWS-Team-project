@@ -17,6 +17,8 @@ class CommentInline(admin.TabularInline):
 	# 	queryset.delete(author=self.model.author, post=self.model.post)
 
 class PostAdmin(admin.ModelAdmin):
+	readonly_fields=('created',)
+	list_display = ['title', 'body', 'author']
 	inlines = [
 		CommentInline,
 	]

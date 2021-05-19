@@ -14,6 +14,9 @@ class Post(models.Model):
 		related_name='posts')
 	likes = models.ManyToManyField(settings.AUTH_USER_MODEL, through='Like')
 
+	class Meta:
+		ordering = ['-created']
+
 	def __str__(self):
 		return self.title
 

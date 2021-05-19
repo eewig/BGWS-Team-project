@@ -12,12 +12,14 @@
     {% for post in object_list %}
         <div class="card">
             <div class="card-header">
-            <span class="text-muted"><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></span> &middot;
-                <span class="text-muted">
-                  by <a href="{% url 'user_profile' post.author.id %}">
+              <h5 class="card-title">
+                <a href="{% url 'post_detail' post.id %}">{{ post.title }}</a>
+              </h5>
+              <h6 class="card-subtitle">
+                by <a href="{% url 'user_profile' post.author.id %}">
                   {{ post.author }}
-                  </a> | {{post.date}}
-                </span>
+                  </a> | <small class="text-muted">{{ post.created|date:"d.m.Y H:i" }}</small>
+              </h6>
             </div>
             <div class="card-body" >
                 <p>{{ post.body }}</p>
@@ -52,9 +54,11 @@
         <a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
       </li>
     {% endif %}
-    <li class="page-item">
-      <a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a>
-    </li>
+    {% if page_obj.number > 1 %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a>
+      </li>
+    {% endif %}
     {% if page_obj.has_next %}
       <li class="page-item">
         <a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
