@@ -1,8 +1,7 @@
 import uuid
 from django.db import models
-from django.contrib.auth import get_user_model
+from django.conf import settings
 from django.urls import reverse
-
 
 class Post(models.Model):
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -10,10 +9,10 @@ class Post(models.Model):
 	body = models.TextField()
 	created = models.DateTimeField(auto_now_add=True)
 	author = models.ForeignKey(
-		get_user_model(),
+		settings.AUTH_USER_MODEL,
 		on_delete=models.CASCADE,
 		related_name='posts')
-	likes = models.ManyToManyField(get_user_model(), through='Like')
+	likes = models.ManyToManyField(settings.AUTH_USER_MODEL, through='Like')
 
 	def __str__(self):
 		return self.title
@@ -28,7 +27,7 @@ class Comment(models.Model):
 		on_delete=models.CASCADE, 
 		related_name='comments',)
 	author = models.ForeignKey(
-		get_user_model(),
+		settings.AUTH_USER_MODEL,
 		on_delete=models.CASCADE,
 		)		
 	comment = models.TextField(max_length=140)
@@ -46,7 +45,7 @@ class Comment(models.Model):
 
 
 class Like(models.Model):
-	user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	post = models.ForeignKey(Post, on_delete=models.CASCADE)
 	liked = models.BooleanField(default=True)
 
