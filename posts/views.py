@@ -12,6 +12,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from .models import Post, Like
 
 
+from .models import Post, Comment
+from django.shortcuts import render, get_object_or_404, redirect
+from .forms import CommentCreateForm
+
+
 # class PostListView(LoginRequiredMixin, ListView):
 class PostHomeListView(ListView):
 	model = Post
@@ -23,8 +28,35 @@ class PostHomeListView(ListView):
 # class PostDetailView(LoginRequiredMixin, DetailView):
 class PostDetailView(DetailView):
 	model = Post
+	form_class = CommentCreateForm
 	template_name = 'post_detail.html'
 	login_url = 'login'
+	context_object_name = 'post'
+
+	# def get(self, request, pk, *args, **kwargs):
+
+	# 	post = get_object_or_404(self.model, id=pk)
+	# 	comment_object = Comment()
+	# 	form = self.form_class(instance=comment_object)
+		
+	# 	context = {'post':post, 'form':form}
+	# 	return render(request, self.template_name, context)
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context['form'] = self.form_class
+		return context
+
+
+	def post(self, request, pk, *args, **kwargs):
+
+		post = get_object_or_404(self.model, id=pk)
+		comment_object = Comment(post=post, author=self.request.user)
+		form = self.form_class(instance=comment_object, data=request.POST)
+
+		if form.is_valid():
+			form.save()
+			return redirect('post_detail', pk=pk)
 
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
