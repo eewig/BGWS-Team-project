@@ -22,7 +22,7 @@
  <p class="card-text"><small class="text-muted likes-number">{{ post|countlikes }}</small></p>
  </div>
 	<p>Back to <a href="{% url 'home' %}">All Articles</a>.</p>
-	<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+
 
 <div class="card-footer">
 	<form action="{% url 'post_detail' post.id %}" method="post">
@@ -32,6 +32,7 @@
 	</form>
 </div>
 
+
 <div class="card-footer">
 	{% for comment in post.comments.all %}
 		<p>
@@ -40,4 +41,5 @@
 		</p>
 	{% endfor %}
 </div>
+<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
 {% endblock content %}

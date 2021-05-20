@@ -12,7 +12,7 @@
 {% block content %}
 <div class="center-profile-block">
   <div class="member-card pt-2 pb-2">
-      <img src="{{ user.pic.url }}" class="rounded-circle img-thumbnail" alt="profile-image">
+      <img src="{{ this_user.pic.url }}" class="rounded-circle img-thumbnail" alt="profile-image">
     <div class="">
       <h3>Username: {{ this_user.username }}</h3>
     </div>
@@ -20,15 +20,15 @@
       <span class = "about"> About this user:</span>
       <p class = "about-content">
       {% if this_user.about %}
-      {{ this_user.about }}
+        {{ this_user.about }}
       {% else %}
-      Nothing about this user.
+        Nothing about this user.
       {% endif %}
       </p>
     </div>
   </div>
     <div>
-      <a href="{% url 'user_posts' this_user.id %}" class="btn btn-outline-primary">More posts from this user</a>
+      <a href="{% url 'user_posts' this_user.id %}" class="btn btn-outline-primary">Posts by this user</a>
     </div>
 </div>
 </div>

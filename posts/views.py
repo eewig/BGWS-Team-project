@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import (
 from django.views import View
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView, CreateView
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
@@ -49,6 +49,8 @@ class PostDetailView(DetailView):
 
 
 	def post(self, request, pk, *args, **kwargs):
+		if not request.user.is_authenticated:
+			return HttpResponseRedirect(reverse(self.login_url))
 
 		post = get_object_or_404(self.model, id=pk)
 		comment_object = Comment(post=post, author=self.request.user)
@@ -97,9 +99,7 @@ class PostLikeView(View):
 	login_url = reverse_lazy('login')
 
 	def get(self, request, pk):
-		print('*'*20, self.login_url)
-		if not request.user.is_authenticated:
-			return HttpResponseRedirect(self.login_url)
+
 		try:
 			p = Post.objects.get(id=pk)
 		except ObjectDoesNotExist:
