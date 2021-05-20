@@ -3,6 +3,7 @@ from django.db import models
 from django.conf import settings
 from django.urls import reverse
 
+
 class Post(models.Model):
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 	title = models.CharField(max_length=255)
@@ -14,6 +15,9 @@ class Post(models.Model):
 		related_name='posts')
 	likes = models.ManyToManyField(settings.AUTH_USER_MODEL, through='Like')
 
+	class Meta:
+		ordering = ['-created']
+
 	def __str__(self):
 		return self.title
 
@@ -23,14 +27,19 @@ class Post(models.Model):
 
 class Comment(models.Model):
 	post = models.ForeignKey(
-		Post, 
+		Post,
 		on_delete=models.CASCADE, 
 		related_name='comments',)
-	comment = models.CharField(max_length=140)
 	author = models.ForeignKey(
 		settings.AUTH_USER_MODEL,
 		on_delete=models.CASCADE,
-		)
+		)		
+	comment = models.TextField(max_length=140)
+	created_on = models.DateTimeField(auto_now_add=True)
+	# active = models.BooleanField(default="True")
+
+	class Meta:
+		ordering = ['created_on']
 
 	def __str__(self):
 		return self.comment

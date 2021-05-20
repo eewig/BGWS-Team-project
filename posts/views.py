@@ -8,8 +8,13 @@ from django.views.generic.edit import UpdateView, DeleteView, CreateView
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponseRedirect
 
 from .models import Post, Like
+
+from .models import Post, Comment
+from django.shortcuts import render, get_object_or_404, redirect
+from .forms import CommentCreateForm
 
 
 # class PostListView(LoginRequiredMixin, ListView):
@@ -23,8 +28,35 @@ class PostHomeListView(ListView):
 # class PostDetailView(LoginRequiredMixin, DetailView):
 class PostDetailView(DetailView):
 	model = Post
+	form_class = CommentCreateForm
 	template_name = 'post_detail.html'
 	login_url = 'login'
+	context_object_name = 'post'
+
+	# def get(self, request, pk, *args, **kwargs):
+
+	# 	post = get_object_or_404(self.model, id=pk)
+	# 	comment_object = Comment()
+	# 	form = self.form_class(instance=comment_object)
+		
+	# 	context = {'post':post, 'form':form}
+	# 	return render(request, self.template_name, context)
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context['form'] = self.form_class
+		return context
+
+
+	def post(self, request, pk, *args, **kwargs):
+
+		post = get_object_or_404(self.model, id=pk)
+		comment_object = Comment(post=post, author=self.request.user)
+		form = self.form_class(instance=comment_object, data=request.POST)
+
+		if form.is_valid():
+			form.save()
+			return redirect('post_detail', pk=pk)
 
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -60,10 +92,14 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 		return super().form_valid(form)
 
 
-class PostLikeView(LoginRequiredMixin, View):
-	login_url = 'login'
+
+class PostLikeView(View):
+	login_url = reverse_lazy('login')
 
 	def get(self, request, pk):
+		print('*'*20, self.login_url)
+		if not request.user.is_authenticated:
+			return HttpResponseRedirect(self.login_url)
 		try:
 			p = Post.objects.get(id=pk)
 		except ObjectDoesNotExist:
@@ -76,9 +112,10 @@ class PostLikeView(LoginRequiredMixin, View):
 			like.liked = True
 		else:
 			likes = Like.objects.filter(post=p, liked=True).count()
-			return JsonResponse({'likes': likes})
+			return JsonResponse({'likes': likes}, status=200)
 		like.save()
-		return JsonResponse({'ok': 'true'})
+		return JsonResponse({'ok': 'true'}, status=200)
+
 
 
 

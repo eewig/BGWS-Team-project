@@ -1,15 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load posts_extras %}
-{% block title %} Home {% endblock title %}
+{% block title %} {{ this_user.username }}'s posts {% endblock title %}
 
 {% block content %}
-<div class="jumbotron">
-    <h1 class="display-4">BGWS</h1>
-    <p class="lead">Hello, this is BGWS built with Django.</p>
-</div>
+<h3>Posts by {{ this_user.username }}</h3>
 <div style="margin-top: 4vh;">
-    {% for post in object_list %}
+    {% for post in this_user.posts.all %}
         <div class="card">
             <div class="card-header">
               <h5 class="card-title">
@@ -35,9 +32,6 @@
                 {% endif %}
              <p class="card-text"><small class="text-muted likes-number">{{ post|countlikes }}</small></p>
              </div>
-            </div>
-            <div class="card-footer">
-              <small class="text-muted likes-number">{{ post.comments.all.count }} comments have been posted.</small>
             </div>
         </div>
         <br>
