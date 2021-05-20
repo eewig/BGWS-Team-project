@@ -1,9 +1,10 @@
 async function likePost(post_id){
-	var imgsUrls=new Array('/static/posts/like_active.png','/static/posts/like.png');
-	var likeDiv=document.getElementById("likes-" + post_id);
-	var image = likeDiv.getElementsByTagName('img')[0];
-	var likesNumber = likeDiv.getElementsByClassName('likes-number')[0];
+	const imgsUrls = new Array('/static/posts/like_active.png','/static/posts/like.png');
+	const likeDiv = document.getElementById("likes-" + post_id);
+	const image = likeDiv.getElementsByTagName('img')[0];
+	const likesTag = likeDiv.getElementsByClassName('likes-number')[0];
 	const baseUrl = location.origin + "/like/" + post_id + "?" + "like="
+	const likesNumber = Number.parseInt(likesTag.textContent, 10)
 
 	if(image.src.indexOf('like.png') > 0){
 		const response = await fetch(baseUrl + "true");
@@ -14,7 +15,7 @@ async function likePost(post_id){
 			const jsonResponse = await response.json();
 			if (jsonResponse['ok'] == "true"){
 				image.src=imgsUrls[0];
-				likesNumber.textContent = Number.parseInt(likesNumber.textContent, 10) + 1;
+				likesTag.textContent = likesNumber + 1;
 			}
 		}
 	}else {
@@ -25,7 +26,7 @@ async function likePost(post_id){
 		.then(function(jsonResponse) {
 			if (jsonResponse['ok'] == "true"){
 				image.src=imgsUrls[1];
-				likesNumber.textContent = Number.parseInt(likesNumber.textContent, 10) - 1;
+				likesTag.textContent = likesNumber - 1;
 			}
 		});
 			

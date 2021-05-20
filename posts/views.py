@@ -8,6 +8,7 @@ from django.views.generic.edit import UpdateView, DeleteView, CreateView
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponseRedirect
 
 from .models import Post, Like
 
@@ -92,10 +93,13 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 		return super().form_valid(form)
 
 
-class PostLikeView(LoginRequiredMixin, View):
-	login_url = 'login'
+class PostLikeView(View):
+	login_url = reverse_lazy('login')
 
 	def get(self, request, pk):
+		print('*'*20, self.login_url)
+		if not request.user.is_authenticated:
+			return HttpResponseRedirect(self.login_url)
 		try:
 			p = Post.objects.get(id=pk)
 		except ObjectDoesNotExist:
@@ -108,9 +112,9 @@ class PostLikeView(LoginRequiredMixin, View):
 			like.liked = True
 		else:
 			likes = Like.objects.filter(post=p, liked=True).count()
-			return JsonResponse({'likes': likes})
+			return JsonResponse({'likes': likes}, status=200)
 		like.save()
-		return JsonResponse({'ok': 'true'})
+		return JsonResponse({'ok': 'true'}, status=200)
 
 
 
