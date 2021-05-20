@@ -12,7 +12,6 @@ from django.http import HttpResponseRedirect
 
 from .models import Post, Like
 
-
 from .models import Post, Comment
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import CommentCreateForm
@@ -93,6 +92,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 		return super().form_valid(form)
 
 
+
 class PostLikeView(View):
 	login_url = reverse_lazy('login')
 
@@ -115,6 +115,7 @@ class PostLikeView(View):
 			return JsonResponse({'likes': likes}, status=200)
 		like.save()
 		return JsonResponse({'ok': 'true'}, status=200)
+
 
 
 

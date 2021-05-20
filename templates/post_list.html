@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Articles{% endblock title %}
+
+{% block content %}
+	{% for post in object_list %}
+		<div class="card">
+			<div class="card-header">
+			<span class="text-muted"><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></span> &middot;
+				<span class="text-muted">by {{ post.author }} | {{post.date}}</span>
+			</div>
+			<div class="card-body">
+				<p>{{ post.body }}</p>
+				{% if post.author == user %}
+					<a href="{% url 'post_edit' post.id %}">Edit</a>
+					<a href="{% url 'post_delete' post.id %}">Delete</a>
+	    	{% endif %}
+			</div>
+		</div>
+		<br>
+	{% endfor %}
+{% endblock content %}

@@ -23,6 +23,7 @@ class UserProfileView(View):
 		return render(request, 'users/user_profile.html', {'this_user': user})
 
 
+
 class UserUpdateView(LoginRequiredMixin, UpdateView):
 	model = CustomUser
 	fields = ['username', 'email', 'about', 'pic']
@@ -44,5 +45,4 @@ class UsersPostsListView(LoginRequiredMixin, DetailView):
 	# def get_context_data(self, pk, **kwargs):
 	# 	context = super().get_context_data(**kwargs)
 	# 	context['page_obj'] = Paginator(object.posts.all(), per_page=self.paginate_by)
-
 
