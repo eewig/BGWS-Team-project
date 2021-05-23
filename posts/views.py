@@ -96,10 +96,11 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 
 class PostLikeView(View):
-	login_url = reverse_lazy('login')
+	login_url = 'login'
 
 	def get(self, request, pk):
-
+		if not request.user.is_authenticated:
+			return HttpResponseRedirect(reverse(self.login_url))
 		try:
 			p = Post.objects.get(id=pk)
 		except ObjectDoesNotExist:
