@@ -31,3 +31,7 @@ h4 {
 .about-content {
     text-align: justify;
 }
+
+.card:hover {
+  border-color: #007bff;
+ }
