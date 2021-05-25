@@ -10,8 +10,10 @@ class CommentCreateForm(forms.ModelForm):
         fields = ("comment",)
 
 class PostCreateForm(forms.ModelForm):
-    title = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control'}), max_length=500)
+    title = forms.CharField( max_length=500)
     body = forms.CharField(widget = forms.Textarea(attrs = {'class': 'form-control'}))
+
+    title.widget.attrs.update({'class': 'form-control'})
     class Meta:
         model = Post
         fields = ("title","body")
