@@ -43,9 +43,38 @@ body{
 }
 
 a{
-    color: black;
+  color: black;
 }
 
 a:hover{
-    text-decoration: none;
+  text-decoration: none;
+}
+
+html, body {
+  height: 100%;
+}
+
+#wrap {
+  min-height: 100%;
+}
+
+
+#page-container{
+    overflow:auto;
+    padding-bottom:75px;
+}
+
+.footer {
+  position: relative;
+  margin-top: -75px; /* negative value of footer height */
+  height: 75px;
+  clear:both;
+  padding-top:20px;
+} 
+
+.advertisement{
+    margin-right: auto;
+    margin-left: auto;
+    width: 300px;
+    height: 160px;
 }

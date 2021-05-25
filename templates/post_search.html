@@ -12,37 +12,7 @@
 
 <div style="margin-top: 4vh;">
     {% for post in posts %}
-        <div class="card">
-            <div class="card-header">
-              <h5 class="card-title">
-                <a href="{% url 'post_detail' post.id %}">{{ post.title|truncatechars:75 }}</a>
-              </h5>
-              <h6 class="card-subtitle">
-                by <a href="{% url 'user_profile' post.author.id %}">
-                  {{ post.author }}
-                  </a> | <small class="text-muted">{{ post.created|date:"d.m.Y H:i" }}</small>
-              </h6>
-            </div>
-            <div class="card-body" >
-                <p>{{ post.body|truncatechars:500 }}</p>
-                {% if post.author == user %}
-                    <a href="{% url 'post_edit' post.id %}">Edit</a>
-                    <a href="{% url 'post_delete' post.id %}">Delete</a>
-            {% endif %}
-         	  <div id="likes-{{ post.id }}" class="d-flex align-items-stretch">
-              {% if post|isliked:user %}
-                <img src="{% static 'posts/like_active.png' %}" onClick="likePost('{{ post.id }}')" width="25" height="25">
-              {% else %}
-                <img src="{% static 'posts/like.png' %}" onClick="likePost('{{ post.id }}')" width="25" height="25">
-              {% endif %}
-              <p class="text-muted likes-number" style="margin-left: 3px;">{{ post|countlikes }}</p>
-             </div>
-            </div>
-            <div class="card-footer">
-              <small class="text-muted likes-number">Comments: {{ post.comments.all.count }}</small>
-            </div>
-        </div>
-        <br>
+      {% include 'post_card.html' %}
     {% endfor %}
 </div>
 

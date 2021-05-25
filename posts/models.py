@@ -4,6 +4,13 @@ from django.conf import settings
 from django.urls import reverse
 
 
+class Tag(models.Model):
+	name = models.CharField(max_length=30)
+
+	def __str__(self):
+		return self.name
+
+
 class Post(models.Model):
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 	title = models.CharField(max_length=255)
@@ -14,6 +21,7 @@ class Post(models.Model):
 		on_delete=models.CASCADE,
 		related_name='posts')
 	likes = models.ManyToManyField(settings.AUTH_USER_MODEL, through='Like')
+	tags = models.ManyToManyField(Tag)
 
 	class Meta:
 		ordering = ['-created']

@@ -1,3 +1,5 @@
+import re
+
 from django.contrib.auth.mixins import (
 	LoginRequiredMixin,
 	UserPassesTestMixin,
@@ -11,7 +13,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.db.models import Q
 
-from .models import Post, Comment, Like
+from .models import Post, Comment, Like, Tag
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import CommentCreateForm
 
@@ -66,6 +68,21 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 	template_name = 'post_edit.html'
 	login_url = 'login'
 
+	def form_valid(self, form):
+		form.instance.author = self.request.user
+		if form.is_valid():
+			self.object = form.save()
+			available_tags = [tag.name for tag in self.object.tags.all()]
+			for tag_text in re.findall(r'#[^\r\n\t\f\v #]{1,30}', form.cleaned_data['body']):
+				if tag_text in available_tags:
+					available_tags.remove(tag_text)
+				else:
+					tag = Tag.objects.get_or_create(name=tag_text)[0]
+					self.object.tags.add(tag)
+			for tag_name in available_tags:
+				self.object.tags.remove(Tag.objects.get(name=tag_name))
+		return super().form_valid(form)
+
 	def test_func(self):
 		obj = self.get_object()
 		return obj.author == self.request.user
@@ -88,8 +105,14 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 	fields = ('title', 'body')
 	login_url = 'login'
 
+
 	def form_valid(self, form):
 		form.instance.author = self.request.user
+		if form.is_valid():
+			self.object = form.save()
+			for tag_text in re.findall(r'#[^\r\n\t\f\v #]{1,30}', form.cleaned_data['body']):
+				tag = Tag.objects.get_or_create(name=tag_text)[0]
+				self.object.tags.add(tag)
 		return super().form_valid(form)
 
 

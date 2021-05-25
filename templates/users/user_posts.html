@@ -6,6 +6,9 @@
 {% block content %}
 <h3>Posts by {{ this_user.username }}</h3>
 <div style="margin-top: 4vh;">
+    {% if this_user.posts.all.count == 0 %}
+      <p>There are no posts by {{this_user.username}} yet)</p>
+    {% endif %}
     {% for post in this_user.posts.all %}
         <div class="card">
             <div class="card-header">

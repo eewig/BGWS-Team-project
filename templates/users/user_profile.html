@@ -10,26 +10,35 @@
 {% block title %}Profile{% endblock %}
 
 {% block content %}
-<div class="center-profile-block">
-  <div class="member-card pt-2 pb-2">
-      <img src="{{ this_user.pic.url }}" class="rounded-circle img-thumbnail" alt="profile-image">
-    <div class="">
-      <h3>Username: {{ this_user.username }}</h3>
-    </div>
-    <div class="mt-4">
-      <span class = "about"> About this user:</span>
-      <p class = "about-content">
+<div class="card" style="width: 18rem;">
+  <img src="{{ this_user.pic.url }}" class="card-img-top" alt="profile-image">
+  <div class="card-body">
+    <h5 class="card-title">Username: {{ this_user.username }}</h5>
+    <p class="card-text">
+      About:
       {% if this_user.about %}
         {{ this_user.about }}
       {% else %}
         Nothing about this user.
       {% endif %}
-      </p>
-    </div>
+    </p>
   </div>
-    <div>
-      <a href="{% url 'user_posts' this_user.id %}" class="btn btn-outline-primary">Posts by this user</a>
-    </div>
+
 </div>
+
+{% if this_user == user %}
+  <div class="my-3">
+    <a href="{% url 'user_update' %}" class="btn btn-outline-primary ms-2">Update profile</a>
+  </div>
+  <div class="mb-3">
+    <a href="{% url 'user_posts' this_user.id %}" class="btn btn-outline-primary">My posts</a>
+  </div>
+{% else %}
+  <div class="my-3">
+    <a href="{% url 'user_posts' this_user.id %}" class="btn btn-outline-primary">Posts by this user</a>
+  </div>
+{% endif %}
+
+
 </div>
 {% endblock %}
