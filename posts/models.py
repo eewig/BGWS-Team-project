@@ -34,7 +34,7 @@ class Comment(models.Model):
 		settings.AUTH_USER_MODEL,
 		on_delete=models.CASCADE,
 		)		
-	comment = models.TextField(max_length=140)
+	comment = models.TextField(max_length=500)
 	created_on = models.DateTimeField(auto_now_add=True)
 	# active = models.BooleanField(default="True")
 

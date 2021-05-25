@@ -9,10 +9,9 @@ from django.urls import reverse_lazy, reverse
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
+from django.db.models import Q
 
-from .models import Post, Like
-
-from .models import Post, Comment
+from .models import Post, Comment, Like
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import CommentCreateForm
 
@@ -118,7 +117,17 @@ class PostLikeView(View):
 		return JsonResponse({'ok': 'true'}, status=200)
 
 
+class PostSearchView(ListView):
+	template_name = 'post_search.html'
+	login_url = 'post_search'
+	context_object_name = 'posts'
+	paginate_by = 10
 
-
+	def get_queryset(self):
+		search_request = self.request.GET['search']
+		result = Post.objects.filter(
+			Q(title__icontains=search_request) | Q(body__icontains=search_request)
+			)
+		return result
 
 
