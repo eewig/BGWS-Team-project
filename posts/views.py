@@ -60,6 +60,8 @@ class PostDetailView(DetailView):
 		if form.is_valid():
 			form.save()
 			return redirect('post_detail', pk=pk)
+		else:
+			return redirect('post_detail', pk=pk)
 
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
