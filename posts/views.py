@@ -13,7 +13,7 @@ from django.db.models import Q
 
 from .models import Post, Comment, Like
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import CommentCreateForm
+from .forms import CommentCreateForm, PostCreateForm
 
 
 # class PostListView(LoginRequiredMixin, ListView):
@@ -84,8 +84,8 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
 	model = Post
+	form_class = PostCreateForm
 	template_name = 'post_new.html'
-	fields = ('title', 'body')
 	login_url = 'login'
 
 	def form_valid(self, form):
